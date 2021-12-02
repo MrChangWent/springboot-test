@@ -10,9 +10,9 @@ public class MysqlBean {
     private Connection connection = null;
     private ResultSet resultSet;
     private String driverName = "com.mysql.jdbc.Driver";
-    private String serverName = "localhost";
+    private String serverName = "hadoop1";
     private String userName = "root";
-    private String password = "123456";
+    private String password = "root";
 
     public MysqlBean(){
         try {

@@ -1,6 +1,6 @@
 package com.zhang.testing.controller;
 
-import com.zhang.testing.service.HiveJDBCTest;
+import com.zhang.testing.service.HiveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,15 @@ public class HiveController {
     public final static Logger logger = LoggerFactory.getLogger(HiveController.class);
 
     @Autowired
-    private HiveJDBCTest hiveJDBCTest;
+    private HiveService hiveService;
 
 
     @GetMapping(value = "/sql")
     public List<String> say(@RequestParam(value = "limitNum", required = false, defaultValue = "0") Integer limitNum)
             throws SQLException {
 
-        List<String> res =  hiveJDBCTest.execSql(limitNum);
+
+        List<String> res =  hiveService.execSql();
         return  res;
 
     }
