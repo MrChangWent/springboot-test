@@ -22,6 +22,7 @@ public class HDFSCalSizeController {
 
     @RequestMapping(value = {"/hdfscal"}, method = RequestMethod.GET)
     public JSONObject returnName(@RequestParam(value = "hdfspath", required = false, defaultValue = "/hbase") String hdfspath) throws IOException, URISyntaxException, InterruptedException {
+        return  null;
     }
 
 }

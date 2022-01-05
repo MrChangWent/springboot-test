@@ -21,7 +21,7 @@ public class SizeCal {
 
         Configuration hadoopconf = new Configuration();
         hadoopconf.set("fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem");
-        FileSystem hdfs = FileSystem.get(new URI("hdfs://hadoop2:8020"), hadoopconf, "hdfs");
+        FileSystem hdfs = FileSystem.get(new URI("hdfs://cigfang:8020"), hadoopconf, "hdfs");
         return hdfs;
     }
 
@@ -33,6 +33,7 @@ public class SizeCal {
         JSONObject jsonres = new JSONObject();
         jsonres.put(HDFSPath, res);
 
+        hdfs.close();
         return jsonres;
     }
 
@@ -46,25 +47,34 @@ public class SizeCal {
         for (FileStatus fileStatus : res) {
             subFolderList.add(fileStatus.getPath().toString());
         }
+        hdfs.close();
 
         return subFolderList;
     }
 
     public JSONObject RecurtionGetFolderSize(String HDFSPath, int count) throws URISyntaxException, IOException, InterruptedException {
 
-        if (count == 3){
+        if (count == 2){
             SizeCal sizeCal = new SizeCal();
             JSONObject floderSize = sizeCal.CalFloderSize(HDFSPath);
             return  floderSize;
         } else {
 
             List subfolder = GetSubFolder(HDFSPath);
+            JSONObject hdfspath = new JSONObject();
+            count += 1;
             for (int i = 0; i < subfolder.toArray().length; i++) {
-
-                return null;
+                String subhdfspath = subfolder.toArray()[i].toString();
+                hdfspath.put(subhdfspath, RecurtionGetFolderSize(subhdfspath, count));
             }
+            return hdfspath;
         }
-        return null;
+    }
+
+    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
+        SizeCal sizeCal = new SizeCal();
+        JSONObject res = sizeCal.RecurtionGetFolderSize("/user/hive", 1);
+        System.out.println(res);
     }
 
 }
